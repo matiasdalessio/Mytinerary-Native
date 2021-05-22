@@ -174,7 +174,7 @@ class SignUp extends React.Component{
                                 </select>  
                                 </div>
                                 <div className="submitYGoogle">
-                                    <button className="submit" onClick={this.send}>Create Account</button> 
+                                    <button className="submit" onPress={this.send}>Create Account</button> 
                                     <GoogleLogin
                                         clientId="706728189535-gkdltcou7njsjagcfhn30q0i25g7f30v.apps.googleusercontent.com"
                                         render={renderProps => (

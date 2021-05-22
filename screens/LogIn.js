@@ -80,7 +80,7 @@ class LogIn extends React.Component{
                                     <input autoComplete="off" type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChange={this.readInput}></input> 
                                 </div> 
                                 <div className="submitYGoogle">                               
-                                    <button className="submit" onClick={this.send}>Log In</button> 
+                                    <button className="submit" onPress={this.send}>Log In</button> 
                                     <GoogleLogin
                                             clientId="706728189535-gkdltcou7njsjagcfhn30q0i25g7f30v.apps.googleusercontent.com"
                                             render={renderProps => (

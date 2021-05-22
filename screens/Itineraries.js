@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-// import Activity from "./Activity";
-// import Comment from "./Comment";
-import { Alert, Button, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import itinerariesActions from "../redux/actions/itinerariesActions";
+import { Ionicons } from '@expo/vector-icons'; 
+import Comment from "./Comment";
+import Activity from "./Activity";
 
 
 const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesAction, props, addComment}) => {
   
   // const userData = JSON.parse(localStorage.getItem('userLogged'))
   const {comments, usersLiked, _id, price, duration, hashtags, itineraryName, author} = itinerary
-  const [toggleItineraries, setToggleItineraries] = useState({button: false,text: "View More", class:"hidden",})
+  const [toggleItineraries, setToggleItineraries] = useState({button: false,text: "View More", display: {display:'none'}})
   const [like, setLike] = useState({usersLiked, fetching:false})  
   const [activity, setActivity] = useState({activities:[]})
   const [commentState, setCommentState] = useState({comments: comments})
@@ -25,8 +26,8 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
 
   const showMoreShowLess = ((e) => {
     setToggleItineraries(toggleItineraries.button 
-      ? {button: false, text: "View More", class:"hidden"}
-      : {button: true, text: "View Less", class:"showMore"}
+      ? {button: false, text: "View More", display: {display:'none'}}
+      : {button: true, text: "View Less", display: {display:'flex'}}
     )}
   ) 
   
@@ -83,50 +84,57 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
 
   return (
 
-      <ScrollView >
+      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', borderRadius:40, overflow:'hidden', marginTop:30, width:'98%', marginLeft:4, }}>
         <ImageBackground style={styles.itineraryBanner} source={require('../assets/img/itineraryBackground.jpg')}> 
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
-                    <View style={{alignItems:'center', marginRight:50}}>
-                          <Image style={{width:100, height:100, borderRadius:100}}  source={{uri: author.imageURL}}></Image>
-                          <Text>{author.userName}</Text>
+                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                    <View style={{alignItems:'center', width:110, }}>
+                          <Image style={{width:100, height:100, borderRadius:100, borderColor:'black',borderWidth:2,}}  source={{uri: author.imageURL}}></Image>
+                          <Text style={{textAlign:'center', fontSize:15, width:110, textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 3}}>{author.userName}</Text>
                     </View >
-                    <View style={{alignItems:'flex-end'}}>
-                          <View >                  
-                              <Text >{itineraryName}</Text> 
-                              <Text >Duration:{"🕒".repeat(duration)}</Text>
-                              <Text >Price: {"💵".repeat(price)}</Text>
+                    <View style={{alignItems:'flex-start', width:260, marginLeft:20}}>
+                          <View style={{alignSelf:'center'}}>
+                              <Text style={{fontSize:20, width:200, marginBottom:20,textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 3, textAlign:'center', marginTop:15}}>{itineraryName}</Text> 
                           </View>
-                          <Text >                  
-                              {!userFounded && like.usersLiked.length === 1 
-                              ? `${like.usersLiked[0].firstName} like this!` 
-                              : null}                  
-                              {userLogged && userFounded && like.usersLiked.length === 1
-                              ? `You like this!` 
-                              : null}
-                              {like.usersLiked.length === 0 && "Nobody like this yet, be the first!"}
-                          </Text>
-                              {/* <Text style={{position:'relative', textDecoration: 'underline', color: 'black', fontSize:'18px'}}>{like.usersLiked.length > 1 && <SimplePopover key="popover" like={like} userFounded={userFounded} userLogged={userLogged}/> }</Text> */}
-                          <Text >
+                          <View style={{alignItems:'flex-start', width:260, marginLeft:30 }}>                                                            
+                              <Text >     
+                                {!userFounded && like.usersLiked.length === 1 
+                                ? `${like.usersLiked[0].firstName} like this!` 
+                                : null}                  
+                                {userLogged && userFounded && like.usersLiked.length === 1
+                                ? `You like this!` 
+                                : null}
+                                {like.usersLiked.length === 0 && "Nobody like this yet, be the first!"}
+                                {/* <Text style={{position:'relative', textDecoration: 'underline', color: 'black', fontSize:'18px'}}>{like.usersLiked.length > 1 && <SimplePopover key="popover" like={like} userFounded={userFounded} userLogged={userLogged}/> }</Text> */}
+                                  {userFounded  
+                                  ? <Ionicons onPress={!like.fetching ? () => likeToggle() : null} name="heart-sharp" size={24} color="red" />
+                                  : <Ionicons onPress={!like.fetching ? () => likeToggle() : null} name="heart-outline" size={24} color="red" />
+                                  }               
+                              </Text>
+                              <Text style={{fontSize:15, textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 1}}>Duration:{"🕒".repeat(duration)}</Text>
+                              <Text style={{fontSize:15, textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 1}}>Price: {"💵".repeat(price)}</Text>
+                          </View>
+                          <Text style={{fontSize:12, textShadowColor: 'rgba(0, 0, 0, 0.5)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 1, maxWidth:210, marginBottom:20,marginLeft:30, alignSelf:'flex-start'}}>
                               {hashtags.map(hashtag =>{
                               return hashtag + " "
                               })}
                           </Text>
                     </View>
                 </View>
-                <View style={{display:'none'}}>
-                    <View >
-                      <View>
+                <View style={toggleItineraries.display}>
+                    <View style={{backgroundColor:'#e2ceb5', width:'94%', marginLeft:8, borderRadius:30, marginTop:20}}>
+                      <Text style={{fontSize:20, marginBottom:20,textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 3, textAlign:'center', marginTop:15}}>Recommended Activities</Text>
+                      <ScrollView horizontal={true} style={{width:'95%', height:150, flexDirection:'row', backgroundColor:'#d3b48f', }}>
                             {activity.activities.length !== 0 &&
                             activity.activities.map(activity => {
                               return <Activity key = {activity._id} activityInfo = {activity}/>
                             })}
-                      </View>
-                      <Text >Leave us a comment!</Text>
+                      </ScrollView >
+                      <Text style={{fontSize:20, marginBottom:20,textShadowColor: 'rgba(0, 0, 0, 1)',textShadowOffset: {width: 1, height: 0}, textShadowRadius: 3, textAlign:'center', marginTop:15}}>Leave us a comment!</Text>
                       <View >
-                            <View className={commentState.comments.length === 0 ? "historyEmptyComments" : "historyComments"}>
+                            <View style={commentState.comments.length === 0 ? styles.historyEmptyComments : styles.historyComments} >
                               {commentState.comments.length !== 0 
                               ? commentState.comments.map(comment =>{
-                                // return <Comment key = {comment._id} commentInfo = {comment} itineraryId ={_id} itinerary ={itinerary} props={props.history} setCommentState = {setCommentState}/>
+                                return <Comment key = {comment._id} commentInfo = {comment} itineraryId ={_id} itinerary ={itinerary} props={props.history} setCommentState = {setCommentState}/>
                               })
                               : <View >
                                   <Text >Nobody left a comment yet...</Text>
@@ -135,16 +143,18 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
                                 </View>
                             }
                         </View> 
-                        <View >  
+                        <View >                            
                               <TextInput  name ="comment" onKeyPress={(e)=> enterToSend(e)} placeholder="Write your comment here!" onChange={(e)=> readComment(e.target)} type="text" value={commentText.comment} ></TextInput> 
-                              {/* <MdSend  onClick={() => sendComment()}/> */}
+                              {/* <MdSend  onPress={() => sendComment()}/> */}
                         </View>                    
                       </View>
                     </View>
-                </View>                
-              <Text onClick={(e) => showMoreShowLess(e)} onFocus={() => loadActivities(_id) }>{toggleItineraries.text}</Text>
+                </View>  
+                <TouchableOpacity onPress={(e) => showMoreShowLess(e)} onPressIn={(e) =>loadActivities(_id)}>             
+                        <Text style={styles.btnReadMore}>{toggleItineraries.text}</Text>
+              </TouchableOpacity> 
           </ImageBackground>
-      </ScrollView>
+      </View>
   );
 }
 
@@ -166,11 +176,50 @@ export default connect(mapStateToProps, mapDispatchToProps)(Itineraries)
 
 const styles = StyleSheet.create({
     itineraryBanner:{
-      width:'100%',
+      width:'103%',
       height:'auto',
-      alignItems:'center',
+      marginLeft:8,
+      alignSelf:'center',
       justifyContent:'center',
-    }
+    },
+    btnReadMore:{
+      fontFamily:'sans-serif-medium',
+      color:'#e2ceb5',
+      backgroundColor:'black',
+      zIndex:2,
+      alignSelf:'center',
+      textAlign:'center',
+      textAlignVertical:'center',
+      fontSize:20,
+      width:150,
+      height:40,  
+      marginTop:10,
+      marginBottom:5,
+      justifyContent:'center',   
+      borderTopRightRadius: 50,
+      borderBottomLeftRadius: 50, 
+    },
+    historyEmptyComments:{
+      borderRadius: 15,
+      backgroundColor: '#e2ceb5',
+      width: '98%',
+      height: 300,
+      overflow: 'scroll',
+      alignItems: 'flex-start' ,
+      justifyContent: 'flex-start',
+
+    },
+    historyComments:{
+      borderRadius: 15,
+      backgroundColor: '#e2ceb5',
+      width: '98%',
+      height: 300,
+      overflow: 'scroll',
+      alignItems: 'center' ,
+      justifyContent: 'center',
+
+    },
+
 
 })
 

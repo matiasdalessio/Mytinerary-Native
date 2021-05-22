@@ -28,7 +28,6 @@ class Cities extends React.Component{
 
 
     render() {
-        console.log(this.state.filteredCities.length)
 
             if (this.state.filteredCities.length === 0) {
             return(
