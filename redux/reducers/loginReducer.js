@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const initialState = {
     userLogged:null,
     countries: []
@@ -11,14 +13,18 @@ const citiesReducer = (state = initialState, action) => {
                 countries: action.payload          
             }
         case 'LOG_USER':
-            localStorage.setItem("userLogged", JSON.stringify({firstName: action.payload.firstName, img: action.payload.img}))
-            localStorage.setItem('token', action.payload.token)
+            const saveInStorage= async () => {
+               await AsyncStorage.setItem("userLogged", JSON.stringify({firstName: action.payload.firstName, img: action.payload.img}))
+               await AsyncStorage.setItem('token', action.payload.token)
+            }
+            saveInStorage()
+            
             return {
                 ...state,
                 userLogged: action.payload         
             }
         case 'LOG_OUT':
-            localStorage.clear()
+            AsyncStorage.clear()
             return {
                 ...state,
                 userLogged: null        

@@ -1,29 +1,44 @@
 import {createDrawerNavigator} from '@react-navigation/drawer'
 import React from 'react'
-import {HomeStack, CitiesStack} from './Stacker'
+import {HomeStack, CitiesStack, LogInStack, SignUpStack} from './Stacker'
 import { connect } from 'react-redux';
-import { AsyncStorage } from 'react-native';
 import loginActions from '../redux/actions/loginActions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from 'react-native';
+
 
 const drawer = createDrawerNavigator()
 
 class Drawer extends React.Component{
 
-    // componentDidMount() {
-    //     if (!this.props.userLogged && AsyncStorage.getItem('token')) {  
-    //     const userData = JSON.parse(AsyncStorage.getItem('userLogged'))
-    //     const userLS= {
-    //         token: AsyncStorage.getItem('token'),
-    //         ...userData
-    //     }
-    //     this.props.forcedLoginByLS(userLS)
-    //     }
-    // }
+    componentDidMount() {
+        if (!this.props.userLogged ) { 
+            const setStringValue = async () => {
+            try {
+                let userData = await JSON.parse( AsyncStorage.getItem('userLogged'))
+                let userLS= {
+                token: await AsyncStorage.getItem('token'),
+                ...userData
+                }
+                console.log('mando info')
+                this.props.forcedLoginByLS(userLS)
+              } catch(e) {
+                // save error
+              }         
+              
+              
+            }
+            setStringValue()
+        }else{
+            console.log('hay usuario logueado')
+        }
+    } 
 
     
     render (){
 
         return (
+            <>
             <drawer.Navigator>
                 <drawer.Screen name="Home" component={HomeStack} options={{
                     title: 'Home'
@@ -31,7 +46,14 @@ class Drawer extends React.Component{
                 <drawer.Screen name="Cities" component={CitiesStack} options={{
                     title: 'Cities',
                 }}/>
-            </drawer.Navigator>
+                {!this.props.userLogged &&<drawer.Screen name="Log In" component={LogInStack} options={{
+                    title: 'Log In'
+                }} />}
+                {!this.props.userLogged &&<drawer.Screen name="Sign Up" component={SignUpStack} options={{
+                    title: 'Sign Up'
+                }} />}
+            </drawer.Navigator>            
+            </>
         )
     }
 }
@@ -43,7 +65,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = {
   forcedLoginByLS :  loginActions.forcedLoginByLS,
-
+  removeUserInfo: loginActions.removeUserInfo
 }
 
 export default connect(mapStateToProps,mapDispatchToProps) (Drawer)

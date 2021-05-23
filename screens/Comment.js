@@ -89,7 +89,7 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
 
     return(
         <View >
-            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginVertical:3, marginHorizontal:15,backgroundColor:'#d3b48f', borderRadius:50}}>            
+            <View style={{flexDirection:'row',width:360, alignItems:'center', justifyContent:'flex-start', marginVertical:3,backgroundColor:'#e2ceb5', borderRadius:50}}>            
                 <Image style={{width:50, height:50, borderRadius:100, marginLeft:5}} source={{uri: commentInfo.img}}/>
                     <View style={{width:240, marginHorizontal:10, marginVertical:3}}>
                         <Text style={{fontSize:15, fontWeight:'bold'}}>{commentInfo.firstName} {commentInfo.lastName}:</Text>
@@ -101,9 +101,9 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
                               <MaterialCommunityIcons name="cancel" size={24} color="black" onPress={() => setEditComment({...editingComment, editing:false})} />  
                         </View> } 
                     </View>                                
-            {/* {!editingComment.editing && userLogged && userLogged.id === commentInfo.userId ? */}
+            {!editingComment.editing && userLogged && userLogged.id === commentInfo.userId ?
             <MaterialIcons name="more-vert" size={24} color="black"  style={{marginRight:15}}  className={commentInfo.comment} onPress={(e) => options(e.target)}/>
-            {/* : null } */}
+             : null } 
             </View> 
         </View> 
     )

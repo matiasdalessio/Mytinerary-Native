@@ -18,12 +18,12 @@ class App extends React.Component{
       return (
             <Provider store={reduxStore} >
               <NavigationContainer>      
-              <StatusBar
-                animated={true}
-                backgroundColor="#61dafb"
-                barStyle={"dark-content"}
-                hidden={true} />
-              <Drawer />
+                <StatusBar
+                  animated={true}
+                  backgroundColor="#61dafb"
+                  barStyle={"dark-content"}
+                  hidden={true} />
+                <Drawer />
               </NavigationContainer>
             </Provider>
         );

@@ -55,7 +55,6 @@ class Cities extends React.Component{
                             <Image  style={styles.avionPNG} source={require("../assets/img/avionH1CitiesR.png")} />
                         </View>
                         <View >
-                            {/* <TextInput placeholder="Search a City" className="finder" type='text'  onChange={(e) => this.props.findCity(e.target.value)}/> */}
                             <TextInput 
                                 placeholder="Search a City"
                                 placeholderTextColor = '#202510'
