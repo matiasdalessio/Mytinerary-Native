@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native'
 import Drawer from './routes/Drawer';
 import mainReducer from './redux/reducers/mainReducer'
 import thunk from 'redux-thunk';
+import GoogleLogin from './screens/GoogleLogin'
 import { StatusBar } from 'expo-status-bar';
 
 const reduxStore = createStore(mainReducer, applyMiddleware(thunk))
@@ -14,7 +15,7 @@ const reduxStore = createStore(mainReducer, applyMiddleware(thunk))
 class App extends React.Component{
 
   render(){
-
+    
       return (
             <Provider store={reduxStore} >
               <NavigationContainer>      
@@ -24,6 +25,7 @@ class App extends React.Component{
                   barStyle={"dark-content"}
                   hidden={true} />
                 <Drawer />
+                {/* <GoogleLogin/> */}
               </NavigationContainer>
             </Provider>
         );

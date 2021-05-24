@@ -13,12 +13,15 @@ const citiesReducer = (state = initialState, action) => {
                 countries: action.payload          
             }
         case 'LOG_USER':
-            const saveInStorage= async () => {
-               await AsyncStorage.setItem("userLogged", JSON.stringify({firstName: action.payload.firstName, img: action.payload.img}))
-               await AsyncStorage.setItem('token', action.payload.token)
-            }
-            saveInStorage()
-            
+            const storeData = async () => {
+                try {
+                    await AsyncStorage.setItem("userLogged", JSON.stringify({firstName: action.payload.firstName, img: action.payload.img}))
+                    await AsyncStorage.setItem('token', action.payload.token)
+                } catch (e) {
+                  // saving error
+                }
+              }
+            storeData()            
             return {
                 ...state,
                 userLogged: action.payload         

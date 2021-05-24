@@ -52,23 +52,23 @@ class LogIn extends React.Component{
                 <View >
                     <ImageBackground style={{width:'100%', height:'100%'}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
-                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:200, left:10, borderRadius:50}}>
+                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:'30%', left:10, borderRadius:50}}>
                             <View  style={{marginBottom:'10%'}}> 
                                 <Text style={styles.tittle}>Log In with your account!</Text>
                                 <Text style={styles.tittle}>Don't have an account?
-                                    {/* <Text onPress={this.props.navigation.navigate('SignUp')}> Sign up!</Text> */}
+                                    <Text style={{color:'#0056B3', textDecorationLine:'underline'}}  onPress={() => this.props.navigation.navigate('Sign Up')}> Sign up!</Text>
                                 </Text>
                             </View >
                             <View style={{width:'100%', alignItems:'center', justifyContent:'center'}}>
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome style={{marginRight:10}} name="envelope" size={30} color="black" />
-                                    <View style={{ width:'80%',height:50, backgroundColor:'#ffffff',borderRadius:50, alignItems:'center', justifyContent:'center',marginVertical:10}} >
+                                    <View style={styles.inputDiv} >
                                         <TextInput style={styles.input}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)} ></TextInput>
                                     </View>
                                 </View>                                
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={{marginRight:10}} name="key" size={30} color="black" />
-                                    <View style={{ width:'80%',height:50, backgroundColor:'#ffffff',borderRadius:50, alignItems:'center', justifyContent:'center', marginVertical:10}} >
+                                    <View style={styles.inputDiv} >
                                         <TextInput style={styles.input} autoComplete="off" type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
@@ -116,31 +116,41 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 50,
         borderBottomLeftRadius: 50, 
     },
-    input: {
-        fontFamily:'sans-serif-medium',
-        width: '100%',
-        height: 60,
-        marginLeft:15,
-        alignSelf:'center',
-        textAlign:'center',
-        fontSize: 20,
-        marginTop: 10,
-        marginBottom:10,
-        textDecorationLine: 'none',
+    inputDiv:{
+        width:'80%',
+        height:30, 
+        backgroundColor:'#ffffff',
+        borderRadius:50, 
+        alignItems:'center', 
+        justifyContent:'center',
+        marginVertical:10,
     },
+    input: {
+            fontFamily:'sans-serif-medium',
+            width: '100%',
+            height: '100%',
+            marginLeft:15,
+            alignSelf:'center',
+            textAlign:'center',
+            fontSize: 20,
+            marginTop: 10,
+            marginBottom:10,
+            textDecorationLine: 'none',
+
+        },
     tittle:{
         color:'#212529',
         marginTop:10,
         fontFamily:'sans-serif-medium',
         textAlign:'center',
-        fontSize:30,
+        fontSize:20,
     },
     logo:{
         position:'absolute',
         width:155,
         height:126,
         top:'1%',
-        left:'60%',
+        left:'3%',
         zIndex:1000
     },
 })

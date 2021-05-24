@@ -31,9 +31,9 @@ class SignUp extends React.Component{
         },
     }
 
-    readInput = ((e) => {
-        // const field = e.target.name
-        // const value = e.target.value
+    readInput = ((text, name) => {
+        const field = name
+        const value = text
         this.setState({
             ...this.state,
             userInfo:{...this.state.userInfo,
@@ -44,7 +44,6 @@ class SignUp extends React.Component{
 
 
     send = async (e = null, googleUser = null) => {
-       e && e.preventDefault()
        let userInfo= e ? this.state.userInfo : googleUser
         if (userInfo.repeatpassword === userInfo.password) {
             const respuesta = await this.props.newUser(userInfo)
@@ -64,51 +63,54 @@ class SignUp extends React.Component{
                             return Alert.alert("Signed Up!")
                     }
                 }                     
-        } else {Alert.alert("Passwords doesn't match!")}
+        } else {
+            Alert.alert("Passwords doesn't match!")
+        }
     }  
 
     
-    // validate = (e) => {
-    //     const field = e.name
-    //     var message = null
-    //     var expression;
-    //     var invalid = "is-invalid"
-    //     var valid = " is-valid"
-    //     if (e.value.length !== 0) {
-    //         switch(field){
-    //             case 'firstName' :
-    //                 expression= /^[a-z ']{2,14}$/i
-    //                 message= !e.value.match(expression) 
-    //                 break
-    //             case 'lastName':
-    //                 expression= /^[a-z ']{2,14}$/i
-    //                 message= !e.value.match(expression) 
-    //                 break
-    //             case 'email':
-    //                 expression= (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$/)
-    //                 message= !e.value.match(expression)   
-    //                 break
-    //             case 'password':
-    //                 expression= /(?=.*\d)(?=.*[A-z])/
-    //                 message = e.value.length < 6 || !e.value.match(expression)
-    //                 break
-    //             case 'repeatpassword':
-    //                 expression= /(?=.*\d)(?=.*[A-z])/
-    //                 message = e.value.length < 6 || !e.value.match(expression) || e.value !== this.state.userInfo.password
-    //                 break  
-    //             case 'img':
-    //                 message= e.value.length === 0 || e.value.length <=3
-    //                 break  
-    //             default:
-    //                 return null
-    //         }
-    //     }        
-    //     this.setState({
-    //         ...this.state,
-    //         validator:{...this.state.validator,
-    //             [field]:  message === null ? "" : !message ? valid : invalid}
-    //     })
-    // }
+    validate = (text, name) => {
+        console.log(name)
+        const field = name
+        var message = null
+        var expression;
+        var valid = styles.correctValue
+        var invalid = styles.incorrectValue
+        if (text.length !== 0) {
+            switch(field){
+                case 'firstName' :
+                    expression= /^[a-z ']{2,14}$/i
+                    message= !text.match(expression) 
+                    break
+                case 'lastName':
+                    expression= /^[a-z ']{2,14}$/i
+                    message= !text.match(expression) 
+                    break
+                case 'email':
+                    expression= (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$/)
+                    message= !text.match(expression)   
+                    break
+                case 'password':
+                    expression= /(?=.*\d)(?=.*[A-z])/
+                    message = text.length < 6 || !text.match(expression)
+                    break
+                case 'repeatpassword':
+                    expression= /(?=.*\d)(?=.*[A-z])/
+                    message = text.length < 6 || !text.match(expression) || text !== this.state.userInfo.password
+                    break  
+                case 'img':
+                    message= text.length === 0 || text.length <=3
+                    break  
+                default:
+                    return null
+            }
+        }        
+        this.setState({
+            ...this.state,
+            validator:{...this.state.validator,
+                [field]:  message === null ? "" : !message ? valid : invalid}
+        })
+    }
     
  
     responseGoogle = (response) => {
@@ -120,57 +122,67 @@ class SignUp extends React.Component{
     
     render() {
         return(
-            <View >
+                <View >
                     <ImageBackground style={{width:'100%', height:'100%'}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
-                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:160, left:10, borderRadius:50}}>
+                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:150, left:10, borderRadius:50}}>
                             <View  style={{marginBottom:'2%'}}> 
                                 <Text style={styles.tittle}>Join to our World of Adventures!</Text>
                                 <Text style={styles.tittle}>Already have an account?
-                                    {/* <Text onPress={this.props.navigation.navigate('Log In')}> Log in!</Text> */}
+                                    <Text style={{color:'#0056B3', textDecorationLine:'underline'}} onPress={() => this.props.navigation.navigate('Log In')}> Log in!</Text>
                                 </Text>
                             </View >
                             <View style={{width:'100%', alignItems:'center', justifyContent:'center'}}>
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome  style={styles.icon} name="user" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} className={`form-control ${this.state.validator.firstName}`} onBlur={(e) => this.validate(e)} type="text" placeholder="First Name" name="firstName" value={this.state.userInfo.firstName} onChangeText={(text,name='firstName') => this.readInput(text,name)}  ></TextInput>
+                                    <View style={[styles.inputDiv, this.state.validator.firstName ]} >
+                                        <TextInput style={styles.input}  onEndEditing={(e, name='firstName') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="First Name" name="firstName" value={this.state.userInfo.firstName} onChangeText={(text,name='firstName') => this.readInput(text,name)}  ></TextInput>
                                     </View>
                                 </View>                                
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome  style={styles.icon} name="user" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} className={`form-control ${this.state.validator.lastName}`} onBlur={(e) => this.validate(e)} type="text" placeholder="Last Name" name="lastName" value={this.state.userInfo.lastName} onChangeText={(text,name='lastName') => this.readInput(text,name)} ></TextInput> 
+                                    <View style={[styles.inputDiv, this.state.validator.lastName ]} >
+                                        <TextInput style={styles.input}  onEndEditing={(e, name='lastName') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="Last Name" name="lastName" value={this.state.userInfo.lastName} onChangeText={(text,name='lastName') => this.readInput(text,name)} ></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome style={styles.icon} name="envelope" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} className={`form-control ${this.state.validator.email}`} onBlur={(e) => this.validate(e)} type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)}></TextInput> 
+                                    <View style={[styles.inputDiv, this.state.validator.email ]} >
+                                        <TextInput style={styles.input}  onEndEditing={(e, name='email') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={styles.icon} name="key" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} id="password" autoComplete="off" className={`form-control ${this.state.validator.password}`} onBlur={(e) => this.validate(e)} type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
+                                    <View style={[styles.inputDiv, this.state.validator.password ]} >
+                                        <TextInput style={styles.input} id="password" autoComplete="off"  onEndEditing={(e, name='password') => this.validate(e.nativeEvent.text, name)} type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={styles.icon} name="key" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} autoComplete="off" className={`form-control ${this.state.validator.repeatpassword}`} onBlur={(e) => this.validate(e)} type="password" placeholder="Repeat Password" name="repeatpassword" value={this.state.userInfo.repeatpassword} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
+                                    <View style={[styles.inputDiv, this.state.validator.repeatpassword ]} >
+                                        <TextInput style={styles.input} autoComplete="off" onEndEditing={(e, name='repeatpassword') => this.validate(e.nativeEvent.text, name)}  type="password" placeholder="Repeat Password" name="repeatpassword" value={this.state.userInfo.repeatpassword} onChangeText={(text,name='repeatpassword') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome style={styles.icon} name="picture-o" size={30} color="black" />
-                                    <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} className={`form-control ${this.state.validator.img}`} onBlur={(e) => this.validate(e)} type="text" placeholder="Profile Pic URL link" name="img" value={this.state.userInfo.img} onChangeText={(text,name='img') => this.readInput(text,name)}></TextInput> 
+                                    <View style={[styles.inputDiv, this.state.validator.img ]} >
+                                        <TextInput style={styles.input}  onEndEditing={(e, name='img') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="Profile Pic URL link" name="img" value={this.state.userInfo.img} onChangeText={(text,name='img') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <Fontisto style={styles.icon} name="world" size={30} color="black"/>
-                                    <View style={styles.inputDiv} >
-                                        <Picker>
+                                    <View style={[styles.inputDiv, this.state.validator.country ]} >
+                                        <Picker
+                                            style={{width:'100%', height:'100%', textAlign:'center'}}
+                                            selectedValue={this.state.userInfo.country}
+                                            itemT
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                this.setState({
+                                                    ...this.state,
+                                                    userInfo:{...this.state.userInfo,
+                                                    country: itemValue}
+                                                })}>
+                                            <Picker.Item label="Choose Your Country" value="" enabled={true} />
                                             <Picker.Item label="Argentina" value="Argentina" />
                                             <Picker.Item label="Bolivia" value="Bolivia" />
                                             <Picker.Item label="Chile" value="Chile" />
@@ -182,7 +194,7 @@ class SignUp extends React.Component{
                                     </View>
                                 </View> 
                                 <View > 
-                                <TouchableOpacity onPress={this.send}>             
+                                <TouchableOpacity onPress={(e=true) => this.send(e=true)}>               
                                             <Text style={styles.sendButton}>Create Account</Text>
                                 </TouchableOpacity>                               
                                     {/* <GoogleLogin/> */}
@@ -230,17 +242,25 @@ const styles = StyleSheet.create({
     },
     inputDiv:{
         width:'80%',
-        height:37, 
+        height:30, 
         backgroundColor:'#ffffff',
         borderRadius:50, 
         alignItems:'center', 
         justifyContent:'center',
-        marginVertical:10
+        marginVertical:10,
+    },
+    correctValue:{
+        borderWidth:2,
+        borderColor:'green'
+    },
+    incorrectValue:{
+        borderWidth:2,
+        borderColor:'red'
     },
     input: {
         fontFamily:'sans-serif-medium',
         width: '100%',
-        height: 60,
+        height: '100%',
         marginLeft:15,
         alignSelf:'center',
         textAlign:'center',
@@ -248,20 +268,21 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom:10,
         textDecorationLine: 'none',
+
     },
     tittle:{
         color:'#212529',
         marginTop:10,
         fontFamily:'sans-serif-medium',
         textAlign:'center',
-        fontSize:30,
+        fontSize:20,
     },
     logo:{
         position:'absolute',
         width:155,
         height:126,
         top:'1%',
-        left:'60%',
+        left:'3%',
         zIndex:1000
     },
 })

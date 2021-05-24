@@ -8,6 +8,7 @@ import Loader from "./Loader";
 
 
 class CityItineraries extends React.Component{
+
     
     state={
         city: [],
@@ -16,6 +17,9 @@ class CityItineraries extends React.Component{
 
 
     componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            this.props.loadItineraries(this.props.route.params.cityId)
+        })
         this.props.loadItineraries(this.props.route.params.cityId)
         if (this.props.filteredCities.length !== 0) {        
             this.setState({
@@ -67,7 +71,7 @@ class CityItineraries extends React.Component{
                     <View style={{backgroundColor:'black'}}>
                              { this.props.itineraries !== null &&  this.props.itineraries.length !== 0
                             ? this.props.itineraries.map((itinerary, index) =>{
-                                return <Itineraries  key= {index} itinerary ={itinerary} props= {this.props}/>                                
+                                return <Itineraries  key= {index} itinerary ={itinerary} props= {this.props.navigation}/>                                
                                 })
                             :   <View >
                                     <View source={require('../assets/img/itineraryBackground.jpg')}> 

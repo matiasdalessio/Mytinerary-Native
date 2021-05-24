@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar"
 import React from "react"
 import { Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler"
 import ContentCarousel from "./ContentCarousel"
 
 
@@ -29,7 +30,9 @@ const Home = (props) =>{
                     </View>
                     <View>
                             <Text style={styles.callToAction}>What are you waiting for?</Text>
-                            <Text onPress={() => props.navigation.navigate("Cities")} style={styles.button}>Go There!</Text> 
+                            <TouchableOpacity>
+                                <Text onPress={() => props.navigation.navigate("Cities")} style={styles.button}>Go There!</Text> 
+                            </TouchableOpacity>
                     </View>
                 </ScrollView> 
             </SafeAreaView>       

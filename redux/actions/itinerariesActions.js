@@ -33,7 +33,7 @@ const itinerariesActions = {
             })          
             return  respuesta.data.respuesta
             } catch {
-            //    props.push('/serverdown')
+               props('Home')
             }
         }
     },

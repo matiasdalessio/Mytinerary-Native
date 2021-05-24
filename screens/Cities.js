@@ -67,7 +67,7 @@ class Cities extends React.Component{
                         <View style={{backgroundColor:'black'}}>
                             {this.props.filteredCities.length >0 
                                 ?   this.props.filteredCities.map(city =>{
-                                    return <TouchableOpacity key={city._id} onPress={() => this.props.navigation.navigate("Itineraries",{cityId:city._id})} style={styles.divBanners}>
+                                    return <TouchableOpacity key={city._id} onPress={() => this.props.navigation.navigate("CityItineraries",{cityId:city._id})} style={styles.divBanners}>
                                         <ImageBackground style={styles.image} source={{uri:city.img}}>
                                             <Text style={styles.cityName}>{city.name}-{city.country}</Text>
                                         </ImageBackground>

@@ -3,8 +3,8 @@ import React from 'react'
 import {HomeStack, CitiesStack, LogInStack, SignUpStack} from './Stacker'
 import { connect } from 'react-redux';
 import loginActions from '../redux/actions/loginActions';
+import DrawerContent from './DrawerContent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text } from 'react-native';
 
 
 const drawer = createDrawerNavigator()
@@ -13,33 +13,28 @@ class Drawer extends React.Component{
 
     componentDidMount() {
         if (!this.props.userLogged ) { 
-            const setStringValue = async () => {
-            try {
-                let userData = await JSON.parse( AsyncStorage.getItem('userLogged'))
-                let userLS= {
-                token: await AsyncStorage.getItem('token'),
-                ...userData
+            const getData = async () => {
+                try {
+                    const jsonValue = await AsyncStorage.getItem('userLogged')
+                    const userData = JSON.parse(jsonValue) 
+                    let userLS= {
+                    token: await AsyncStorage.getItem('token'),
+                    ...userData
+                    }
+                    this.props.forcedLoginByLS(userLS)
+                } catch(e) {
+                  console.log(e)
                 }
-                console.log('mando info')
-                this.props.forcedLoginByLS(userLS)
-              } catch(e) {
-                // save error
-              }         
-              
-              
             }
-            setStringValue()
-        }else{
-            console.log('hay usuario logueado')
+            getData()            
         }
     } 
 
     
     render (){
-
         return (
             <>
-            <drawer.Navigator>
+            <drawer.Navigator drawerContent={props =><DrawerContent {...props}/>}>
                 <drawer.Screen name="Home" component={HomeStack} options={{
                     title: 'Home'
                 }} />
