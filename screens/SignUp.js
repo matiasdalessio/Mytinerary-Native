@@ -1,10 +1,11 @@
 import React from "react"
 import loginActions from "../redux/actions/loginActions";
 import { connect } from "react-redux"
-import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, View} from "react-native"
+import { Alert, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, View} from "react-native"
 import { FontAwesome, FontAwesome5, Fontisto  } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {Picker} from '@react-native-picker/picker';
+import Toast from "react-native-toast-message";
 
 
 class SignUp extends React.Component{
@@ -31,6 +32,30 @@ class SignUp extends React.Component{
         },
     }
 
+    componentDidMount(){
+        this.props.navigation.addListener('blur', () => {
+            this.setState({
+            userInfo:{
+                repeatpassword: "",
+                firstName: "",
+                lastName: "",
+                country: "",
+                password:"",
+                img: "",
+                email: "",
+            },
+            validator:{
+                repeatpassword: "",
+                firstName: "",
+                lastName: "",
+                country: "",
+                password:"",
+                img: "",
+                email: "",
+            }})
+        }) 
+    }
+
     readInput = ((text, name) => {
         const field = name
         const value = text
@@ -50,27 +75,53 @@ class SignUp extends React.Component{
                 if (!respuesta) {
                     return this.props.navigation.navigate('Home') 
                 }else if (respuesta.message) {
-                    Alert.alert(respuesta.message)                
+                    Toast.show({
+                        type: 'error',
+                        text2: respuesta.message,
+                        visibilityTime: 2000,
+                      }
+                    )               
                 } else {
                     switch(respuesta){
                         case 'The E-mail is already in use':
-                            Alert.alert("The E-mail is already in use")
+                            Toast.show({
+                                type: 'error',
+                                text2: 'The E-mail is already in use',
+                                visibilityTime: 2000,
+                              }
+                            )  
                             break
                         case 'There was an error in the register.':
-                            Alert.alert("There was an error in the register.")
+                            Toast.show({
+                                type: 'error',
+                                text2: 'There was an error in the register.',
+                                visibilityTime: 2000,
+                              }
+                            )  
                             break
                         default:
-                            return Alert.alert("Signed Up!")
+                            return Toast.show({
+                                text1: 'Signed up correctly!',
+                                text2: 'Welcome ' + this.props.userLogged.firstName,
+                                visibilityTime: 2000,
+                                onHide: () => this.props.navigation.navigate('Home'),
+                              }
+                            )
                     }
                 }                     
         } else {
-            Alert.alert("Passwords doesn't match!")
+            Toast.show({
+                type: 'error',
+                text1: "Passwords doesn't match",
+                text2: 'Verify and try again!',
+                visibilityTime: 2000,
+              }
+            )
         }
     }  
 
     
     validate = (text, name) => {
-        console.log(name)
         const field = name
         var message = null
         var expression;
@@ -99,7 +150,7 @@ class SignUp extends React.Component{
                     message = text.length < 6 || !text.match(expression) || text !== this.state.userInfo.password
                     break  
                 case 'img':
-                    message= text.length === 0 || text.length <=3
+                    message= text.length === 0 
                     break  
                 default:
                     return null
@@ -122,10 +173,10 @@ class SignUp extends React.Component{
     
     render() {
         return(
-                <View >
-                    <ImageBackground style={{width:'100%', height:'100%'}} source={require( '../assets/img/backgroundSign.jpg')}>
+                <ScrollView style={{flex:1, height:'100%'}}>
+                    <ImageBackground style={{width:'100%', height:900}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
-                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:150, left:10, borderRadius:50}}>
+                        <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:'20%', left:10, borderRadius:50}}>
                             <View  style={{marginBottom:'2%'}}> 
                                 <Text style={styles.tittle}>Join to our World of Adventures!</Text>
                                 <Text style={styles.tittle}>Already have an account?
@@ -148,19 +199,19 @@ class SignUp extends React.Component{
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome style={styles.icon} name="envelope" size={30} color="black" />
                                     <View style={[styles.inputDiv, this.state.validator.email ]} >
-                                        <TextInput style={styles.input}  onEndEditing={(e, name='email') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)}></TextInput> 
+                                        <TextInput keyboardType='visible-password' style={styles.input}  onEndEditing={(e, name='email') => this.validate(e.nativeEvent.text, name)}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={styles.icon} name="key" size={30} color="black" />
                                     <View style={[styles.inputDiv, this.state.validator.password ]} >
-                                        <TextInput style={styles.input} id="password" autoComplete="off"  onEndEditing={(e, name='password') => this.validate(e.nativeEvent.text, name)} type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
+                                        <TextInput keyboardType='twitter' secureTextEntry={true} style={styles.input} id="password" autoComplete="off"  onEndEditing={(e, name='password') => this.validate(e.nativeEvent.text, name)} type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={styles.icon} name="key" size={30} color="black" />
                                     <View style={[styles.inputDiv, this.state.validator.repeatpassword ]} >
-                                        <TextInput style={styles.input} autoComplete="off" onEndEditing={(e, name='repeatpassword') => this.validate(e.nativeEvent.text, name)}  type="password" placeholder="Repeat Password" name="repeatpassword" value={this.state.userInfo.repeatpassword} onChangeText={(text,name='repeatpassword') => this.readInput(text,name)}></TextInput> 
+                                        <TextInput keyboardType='twitter' secureTextEntry={true} style={styles.input} autoComplete="off" onEndEditing={(e, name='repeatpassword') => this.validate(e.nativeEvent.text, name)}  type="password" placeholder="Repeat Password" name="repeatpassword" value={this.state.userInfo.repeatpassword} onChangeText={(text,name='repeatpassword') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
@@ -182,7 +233,7 @@ class SignUp extends React.Component{
                                                     userInfo:{...this.state.userInfo,
                                                     country: itemValue}
                                                 })}>
-                                            <Picker.Item label="Choose Your Country" value="" enabled={true} />
+                                            <Picker.Item label="...................Choose Your Country..................." value="" enabled={true} />
                                             <Picker.Item label="Argentina" value="Argentina" />
                                             <Picker.Item label="Bolivia" value="Bolivia" />
                                             <Picker.Item label="Chile" value="Chile" />
@@ -202,7 +253,7 @@ class SignUp extends React.Component{
                             </View>                          
                         </View>                        
                     </ImageBackground>
-                </View>     
+                </ScrollView>  
         )
     }
 }
@@ -237,6 +288,11 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 50,
         borderBottomLeftRadius: 50, 
     },
+    safeArea:{
+        flex: 1,
+        backgroundColor: '#e2ceb5',
+        height:'130%'
+    },   
     icon:{
         marginRight:10
     },
@@ -282,7 +338,7 @@ const styles = StyleSheet.create({
         width:155,
         height:126,
         top:'1%',
-        left:'3%',
+        left:'35%',
         zIndex:1000
     },
 })

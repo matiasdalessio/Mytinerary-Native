@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     width:'100%',
     height:'100%',
     backgroundColor:'#e2ceb5',
-    zIndex:10000
+    zIndex:1
   }
 });

@@ -1,23 +1,27 @@
 import {createStackNavigator} from '@react-navigation/stack'
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import Cities from '../screens/Cities'
 import CityItineraries from '../screens/CityItineraries'
 import Home from '../screens/Home'
 import LogIn from '../screens/LogIn'
 import SignUp from '../screens/SignUp'
 import { MaterialIcons } from '@expo/vector-icons';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
 
 
 const stack = createStackNavigator()
+
 
 export const HomeStack = (props) => {
     return (
         <stack.Navigator>
             <stack.Screen name="Home" component={Home} options={{
-                headerRight: () => <MaterialIcons style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()} name="menu" size={50} color="black" />,
+                headerRight: () =>  <TouchableOpacity style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()}>
+                                        <MaterialIcons  name="menu" size={40} color="black" />
+                                    </TouchableOpacity>,
                 title:'',
-                headerTransparent:true
+                headerTransparent:true,
             }}
             />
             
@@ -29,14 +33,22 @@ export const CitiesStack = (props) => {
     return (
         <stack.Navigator>
             <stack.Screen name="Cities" component={Cities} options={{
-                 headerRight: () => <MaterialIcons style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()} name="menu" size={50} color="black" />,
+                headerRight: () =>  <TouchableOpacity style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()}>
+                                        <MaterialIcons  name="menu" size={40} color="black" />
+                                    </TouchableOpacity>,
+                headerLeft: () =>   <TouchableOpacity style={styles.backIcon}  onPress={() => props.navigation.navigate('Home')}>
+                                        <MaterialIcons name="arrow-back" size={40} color="black" />
+                                    </TouchableOpacity>,
                 title:'',
                 headerTransparent:true
             }}/>
             <stack.Screen name="CityItineraries" component={CityItineraries} options={{
-                 headerRight: () => <MaterialIcons style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()} name="menu" size={50} color="black" />,
+                 headerRight: () => <TouchableOpacity style={styles.burgerMenu} onPress={() => props.navigation.openDrawer(props)}>
+                                        <MaterialIcons  name="menu" size={40} color="black" />
+                                    </TouchableOpacity>,
+                headerShown:false,                   
                 title:'',
-                headerTransparent:true
+                headerTransparent:true,
             }}/>            
         </stack.Navigator>
     )
@@ -45,7 +57,12 @@ export const LogInStack = (props) => {
     return (
         <stack.Navigator>
             <stack.Screen name="Log In" component={LogIn} options={{
-                 headerRight: () => <MaterialIcons style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()} name="menu" size={50} color="black" />,
+                headerRight: () =>  <TouchableOpacity style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()}>
+                                        <MaterialIcons  name="menu" size={40} color="black" />
+                                    </TouchableOpacity>,
+                headerLeft: () =>   <TouchableOpacity style={styles.backIcon} onPress={() => props.navigation.navigate('Home')}>
+                                        <MaterialIcons  name="arrow-back" size={40} color="black" />
+                                    </TouchableOpacity>,
                 title:'',
                 headerTransparent:true
             }}/>           
@@ -56,7 +73,12 @@ export const SignUpStack = (props) => {
     return (
         <stack.Navigator>
             <stack.Screen name="Sign Up" component={SignUp} options={{
-                 headerRight: () => <MaterialIcons style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()} name="menu" size={50} color="black" />,
+                headerRight: () =>  <TouchableOpacity style={styles.burgerMenu} onPress={() => props.navigation.openDrawer()}>
+                                        <MaterialIcons  name="menu" size={40} color="black" />
+                                    </TouchableOpacity>,
+                headerLeft: () =>   <TouchableOpacity style={styles.backIcon} onPress={() => props.navigation.navigate('Home')}>
+                                        <MaterialIcons  name="arrow-back" size={40} color="black" />
+                                    </TouchableOpacity>,
                 title:'',
                 headerTransparent:true
             }}/>           
@@ -68,8 +90,22 @@ const styles = StyleSheet.create({
     burgerMenu:{
         top:'20%',
         right:'20%',
+        borderWidth:3, 
+        borderRadius:30, 
+        overflow:'hidden', 
+        alignItems:'center', 
+        justifyContent:'center',
         backgroundColor:'#e2ceb5',
-        borderRadius:100
+    },
+    backIcon:{
+        top:'20%',
+        left:'20%',
+        borderWidth:3, 
+        borderRadius:30, 
+        overflow:'hidden', 
+        alignItems:'center', 
+        justifyContent:'center',
+        backgroundColor:'#e2ceb5',
     }
 
 })

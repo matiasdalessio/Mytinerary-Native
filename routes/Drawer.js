@@ -41,12 +41,12 @@ class Drawer extends React.Component{
                 <drawer.Screen name="Cities" component={CitiesStack} options={{
                     title: 'Cities',
                 }}/>
-                {!this.props.userLogged &&<drawer.Screen name="Log In" component={LogInStack} options={{
+                <drawer.Screen name="Log In" component={LogInStack} options={{
                     title: 'Log In'
-                }} />}
-                {!this.props.userLogged &&<drawer.Screen name="Sign Up" component={SignUpStack} options={{
+                }} />
+                <drawer.Screen name="Sign Up" component={SignUpStack} options={{
                     title: 'Sign Up'
-                }} />}
+                }} />
             </drawer.Navigator>            
             </>
         )

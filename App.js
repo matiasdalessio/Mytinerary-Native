@@ -8,6 +8,7 @@ import mainReducer from './redux/reducers/mainReducer'
 import thunk from 'redux-thunk';
 import GoogleLogin from './screens/GoogleLogin'
 import { StatusBar } from 'expo-status-bar';
+import Toast from 'react-native-toast-message';
 
 const reduxStore = createStore(mainReducer, applyMiddleware(thunk))
 
@@ -25,6 +26,7 @@ class App extends React.Component{
                   barStyle={"dark-content"}
                   hidden={true} />
                 <Drawer />
+                <Toast ref={(ref) => Toast.setRef(ref)} />
                 {/* <GoogleLogin/> */}
               </NavigationContainer>
             </Provider>

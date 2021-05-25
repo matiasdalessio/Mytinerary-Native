@@ -1,10 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
 import loginActions from "../redux/actions/loginActions"
-import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, Image, ImageBackground, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
 import { FontAwesome, FontAwesome5  } from '@expo/vector-icons';
-import GoogleLogin from "./GoogleLogin"
+
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 
 
 class LogIn extends React.Component{
@@ -15,6 +16,16 @@ class LogIn extends React.Component{
         }
         
     }
+
+    componentDidMount(){
+        this.props.navigation.addListener('blur', () => {
+            this.setState({userInfo:{
+                password:"",
+                email: "",
+            }})
+        }) 
+    }
+
 
     readInput = ((text, name) => {
         let field=name
@@ -33,24 +44,35 @@ class LogIn extends React.Component{
         if (!respuesta) {
             return this.props.navigation.navigate('Home')            
         } else if (respuesta.error) {
-            Alert.alert(respuesta.error)
+            Toast.show({
+                type: 'error',
+                text2: respuesta.error,
+                visibilityTime: 2000,
+              }
+            )
         } else {
-            Alert.alert("Logged in correctly!")
+            Toast.show({
+                text1: 'Logged correctly!',
+                text2: 'Welcome ' + this.props.userLogged.firstName,
+                visibilityTime: 2000,
+                onHide: () => this.props.navigation.navigate('Home'),
+              }
+            )
+              
         }   
     }
     
         
     responseGoogle = (response) => {
         const {email, googleId} = response.profileObj
-        this.send(null,{email: email, password: "matias"+googleId, country: "null"})
-        
+        this.send(null,{email: email, password: "matias"+googleId, country: "null"})        
     }
 
 
     render() {
         return(
-                <View >
-                    <ImageBackground style={{width:'100%', height:'100%'}} source={require( '../assets/img/backgroundSign.jpg')}>
+                <ScrollView >
+                    <ImageBackground style={{width:'100%', height:900}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
                         <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:'30%', left:10, borderRadius:50}}>
                             <View  style={{marginBottom:'10%'}}> 
@@ -63,13 +85,13 @@ class LogIn extends React.Component{
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome style={{marginRight:10}} name="envelope" size={30} color="black" />
                                     <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)} ></TextInput>
+                                        <TextInput keyboardType='visible-password' style={styles.input}  type="text" placeholder="E-Mail" name="email" value={this.state.userInfo.email} onChangeText={(text,name='email') => this.readInput(text,name)} ></TextInput>
                                     </View>
                                 </View>                                
                                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                                     <FontAwesome5 style={{marginRight:10}} name="key" size={30} color="black" />
                                     <View style={styles.inputDiv} >
-                                        <TextInput style={styles.input} autoComplete="off" type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
+                                        <TextInput keyboardType='twitter' secureTextEntry={true} style={styles.input} autoComplete="off" type="password" placeholder="Password" name="password" value={this.state.userInfo.password} onChangeText={(text,name='password') => this.readInput(text,name)}></TextInput> 
                                     </View>
                                 </View> 
                                 <View > 
@@ -81,7 +103,7 @@ class LogIn extends React.Component{
                             </View>                          
                         </View>                        
                     </ImageBackground>
-                </View>     
+                </ScrollView>     
         )
     }
 }
@@ -150,7 +172,7 @@ const styles = StyleSheet.create({
         width:155,
         height:126,
         top:'1%',
-        left:'3%',
+        left:'35%',
         zIndex:1000
     },
 })

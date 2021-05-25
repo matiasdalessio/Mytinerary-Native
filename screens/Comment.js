@@ -48,10 +48,7 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
       [
           {text: 'Edit', onPress: () => editComment()},
           {text: 'Delete', onPress: () => Alert.alert("Your comment will be deleted...", "Are you sure?", [
-                {text: 'Yes', onPress: () => {
-                  editOrRemove(null, commentId, itineraryId)
-                  return Alert.alert('Poof! Your comment has been deleted!')
-                }},
+                {text: 'Yes', onPress: () => editOrRemove(null, commentId, itineraryId)},
               {text: 'No'},
           ]) 
           },
@@ -88,8 +85,8 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
                     <View style={{width:'78%', marginHorizontal:10, marginVertical:3}}>
                         <Text style={{fontSize:15, fontWeight:'bold'}}>{commentInfo.firstName} {commentInfo.lastName}:</Text>
                         {!editingComment.editing 
-                        ? <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                              <Text style={{marginLeft:15}}>{commentInfo.comment}</Text> 
+                        ? <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'94%'}}>
+                              <Text style={{marginLeft:15, minWidth:'90%'}}>{commentInfo.comment}</Text> 
                               {!editingComment.editing && userLogged && userLogged.id === commentInfo.userId ?
                                 <MaterialIcons name="more-vert" size={24} color="black"  style={{top:-10}}  className={commentInfo.comment} onPress={(e) => options(e.target)}/>
                                 : null } 

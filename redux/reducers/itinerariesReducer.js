@@ -1,5 +1,5 @@
 const initialState = {
-    itineraries:[],
+    itineraries:null,
 }
 
 
@@ -13,7 +13,7 @@ const citiesReducer = (state = initialState, action) => {
         case 'CLEAN_ITINERARIES':
             return {
                 ...state,
-                itineraries: action.payload           
+                itineraries: null       
             }          
         default:
             return state

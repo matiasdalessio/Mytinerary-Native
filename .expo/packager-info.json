@@ -3,8 +3,8 @@
   "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://ky-rzt.anonymous.mytinerary-mobile.exp.direct",
+  "packagerNgrokUrl": "https://packager.ky-rzt.anonymous.mytinerary-mobile.exp.direct",
+  "ngrokPid": 20956,
   "webpackServerPort": null
 }

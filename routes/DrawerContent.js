@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, ImageBackground, Image } from 'react-native';
-import { Title, Drawer, } from 'react-native-paper';
+import { View, StyleSheet, Image, Alert } from 'react-native';
+import { Title } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import {HomeStack, CitiesStack, LogInStack, SignUpStack} from './Stacker'
 import { connect } from 'react-redux';
 import loginActions from '../redux/actions/loginActions';
+import { Drawer } from 'react-native-paper';
 
 
 
@@ -27,32 +27,35 @@ function DrawerContent(props) {
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <Drawer.Section style={styles.drawerSection}>
-            
-          <DrawerItem style={{backgroundColor:'#e2ceb5'}}
+          <Drawer.Item
+              style={{ backgroundColor: '#e2ceb5' }}
+              icon="home"
               label="HOME"
-              labelStyle={{color:'black', fontWeight:'bold'}}
               onPress={() => { props.navigation.navigate('Home') }}
-              />
-            <DrawerItem style={{backgroundColor:'#e2ceb5'}}
+          />
+          <Drawer.Item
+              style={{ backgroundColor: '#e2ceb5' }}
+              icon="city"
               label="CITIES"
-              labelStyle={{color:'black', fontWeight:'bold'}}
               onPress={() => { props.navigation.navigate('Cities') }}
-              />
+          />
 
            
            
             {!props.userLogged &&
               <>             
-                <DrawerItem style={{backgroundColor:'#e2ceb5'}}
-                 labelStyle={{color:'black', fontWeight:'bold'}}
-                 label="SIGN UP"
-                 onPress={() => { props.navigation.navigate('Sign Up') }}
-                 />
-                <DrawerItem style={{backgroundColor:'#e2ceb5'}}
-                  labelStyle={{color:'black', fontWeight:'bold'}}
-                  label="LOGIN"
-                  onPress={() => { props.navigation.navigate('Log In') }}
-                  />
+                <Drawer.Item
+                    style={{ backgroundColor: '#e2ceb5' }}
+                    icon="account-plus"
+                    label="SIGN UP"
+                    onPress={() => { props.navigation.navigate('Sign Up') }}
+                />
+                <Drawer.Item
+                    style={{ backgroundColor: '#e2ceb5' }}
+                    icon="login"
+                    label="LOG IN"
+                    onPress={() => { props.navigation.navigate('Log In') }}
+                />
               </>
             }
           </Drawer.Section>
@@ -60,11 +63,15 @@ function DrawerContent(props) {
       </DrawerContentScrollView>
       {props.userLogged &&
         <Drawer.Section style={styles.bottomDrawerSection}>
-          <DrawerItem style={{backgroundColor:'#e2ceb5'}}
-                 labelStyle={{color:'black', fontWeight:'bold'}}
-            label="LOG OUT"
-            onPress={() => props.removeUserInfo()}
-          />
+          <Drawer.Item
+                    style={{ backgroundColor: '#e2ceb5' }}
+                    icon="logout"
+                    label="LOG OUT"
+                    onPress={() => Alert.alert("Are you sure you want to log out?", "", [
+                      {text: 'Yes', onPress: () => props.removeUserInfo()},
+                      {text:'No'}                  
+                    ])}
+                />
            
         </Drawer.Section>
       }

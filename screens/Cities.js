@@ -1,10 +1,11 @@
 import React from "react"
-import { Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,TouchableOpacity } from "react-native"
+import { Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,TouchableOpacity, ToastAndroid } from "react-native"
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from "react-redux"
 import itinerariesActions from '../redux/actions/itinerariesActions';
 import citiesActions from '../redux/actions/citiesActions'
 import Loader from "./Loader"
+import Toast from "react-native-toast-message";
 
 
 
@@ -15,7 +16,11 @@ class Cities extends React.Component{
     }
    
 
-    componentDidMount() {  
+    componentDidMount() { 
+        this.props.navigation.addListener('focus', () => {
+            this.props.fetchCities()
+            this.props.cleanItineraries() 
+        }) 
         this.props.fetchCities()   
         this.props.cleanItineraries() 
         this.setState({filteredCities: this.props.filteredCities})
@@ -40,7 +45,6 @@ class Cities extends React.Component{
         return(
             <SafeAreaView style={styles.safeArea}>
                 <ScrollView >
-                    <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
                     <Image style={styles.hero} source={require("../assets/img/heroimg2.jpg")}/>
                     <View >
                         <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
@@ -58,27 +62,30 @@ class Cities extends React.Component{
                             <TextInput 
                                 placeholder="Search a City"
                                 placeholderTextColor = '#202510'
-                                // keyboardType = 'text'
                                 color = 'black'
                                 style = {styles.input}
                                 onChangeText={(e) => this.props.findCity(e)}
                             />
                         </View>
-                        <View style={{backgroundColor:'black'}}>
+                        <View style={{backgroundColor:'black', }}>
                             {this.props.filteredCities.length >0 
                                 ?   this.props.filteredCities.map(city =>{
-                                    return <TouchableOpacity key={city._id} onPress={() => this.props.navigation.navigate("CityItineraries",{cityId:city._id})} style={styles.divBanners}>
-                                        <ImageBackground style={styles.image} source={{uri:city.img}}>
-                                            <Text style={styles.cityName}>{city.name}-{city.country}</Text>
-                                        </ImageBackground>
-                                    </TouchableOpacity>
+                                    return  <TouchableOpacity onLongPress={() => console.log('hola')} key={city._id} onPress={() => this.props.navigation.navigate("CityItineraries",{cityId:city._id})} style={styles.divBanners}>
+                                                <ImageBackground style={styles.image} source={{uri:city.img}}>
+                                                    <Text style={styles.cityName}>{city.name}-{city.country}</Text>
+                                                </ImageBackground>
+                                            </TouchableOpacity>
                                 })
-                                :   <ImageBackground style={styles.notFounded} source={require('../assets/img/mapa.jpg')}> 
-                                        <Text style={styles.notFoundedTittle}>Oh no! Looks like that city doesn't exist here yet... </Text>
-                                        <Text style={styles.notFoundedSubTittle}>Try another one!</Text>                                 
-                                    </ImageBackground> 
+                                :   <View style={styles.divNotFounded}>
+                                        <ImageBackground style={styles.notFoundedImage} source={require('../assets/img/mapa.jpg')}> 
+                                            <Text style={styles.notFoundedTittle}>Oh no! Looks like that city doesn't exist here yet... </Text>
+                                            <Text style={styles.notFoundedSubTittle}>Try another one!</Text>                                 
+                                        </ImageBackground> 
+                                    </View>
                             }
-                            <Text style={styles.button}>Back to Home</Text>
+                            <TouchableOpacity  onPress={() => this.props.navigation.navigate("Home")}>
+                                <Text  style={styles.button}>Back to Home</Text> 
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView> 
@@ -104,11 +111,8 @@ export default connect(mapStateToProps,mapDispatchToProps) (Cities)
 const styles = StyleSheet.create({
     image: {
         alignItems:'center',
-        opacity:1,
         width:"100%",
         height:150,
-        marginBottom:20,
-        marginTop:20, 
     },
     safeArea:{
         flex: 1,
@@ -116,23 +120,24 @@ const styles = StyleSheet.create({
         height:'100%'
     },  
     cityName:{
-        top:"40%",
-        fontSize: 30,
+        top:"10%",
+        fontSize: 25,
         zIndex:20,
         textAlign:'center',
-        width:'100%',
-        top:50, 
+        width:'100%', 
         backgroundColor:'rgba(0, 0, 0, 0.550)', 
         color:'#e2ceb5',
         shadowColor: "white",
     },
     divBanners:{
         width:'98%',
+        height:150,
         alignItems:'center',
         justifyContent:'center',
-        borderRadius: 180,
+        borderRadius: 500,
         overflow:'hidden',
-        marginLeft:5,        
+        marginLeft:5, 
+        marginVertical:10       
     },
     input: {
         fontFamily:'sans-serif-medium',
@@ -148,36 +153,46 @@ const styles = StyleSheet.create({
         borderBottomWidth:2,
         textDecorationLine: 'none'
     },
-    notFounded:{
+    divNotFounded:{
+        width:'98%',
+        height:150,
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius: 500,
+        overflow:'hidden',
+        marginLeft:5, 
+        marginTop:60,
+        marginBottom:'60%'
+    },
+    notFoundedImage:{
+        alignItems:'center',
         width:"100%",
-        height:200,
+        height:150,
     },
     notFoundedTittle:{
-        marginTop:50,
-        textAlign: 'center',
-        alignSelf:'center',
-        justifyContent:'center',
-        fontSize: 20,
-        fontFamily:'sans-serif-medium',
+        fontWeight:'bold',
+        top:"35%",
+        fontSize: 15,
+        zIndex:20,
+        textAlign:'center',
+        width:'100%', 
+        backgroundColor:'rgba(0, 0, 0, 0.650)', 
+        color:'#e2ceb5',
+        shadowColor: "white",
     },
     notFoundedSubTittle:{
-        textAlign: 'center',
-        alignSelf:'center',
-        justifyContent:'center',
-        fontSize: 20,
-        fontFamily:'sans-serif-medium',
+        top:"35%",
+        fontSize: 14,
+        zIndex:20,
+        textAlign:'center',
+        width:'100%', 
+        backgroundColor:'rgba(0, 0, 0, 0.650)', 
+        color:'#e2ceb5',
+        shadowColor: "white",
     },
     hero:{
         width:"100%",
         height:200, 
-    },
-    logo:{
-        position:'absolute',
-        width:100,
-        height:80,
-        top:0,
-        left:'2%',
-        zIndex:1000
     },
     avionPNG:{
         width:"20%",
@@ -195,7 +210,7 @@ const styles = StyleSheet.create({
         width:170,
         height:40,  
         marginTop:6,
-        marginBottom:10,
+        marginBottom:50,
         justifyContent:'center',   
         borderTopRightRadius: 50,
         borderBottomLeftRadius: 50,    

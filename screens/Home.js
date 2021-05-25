@@ -1,23 +1,21 @@
-import { StatusBar } from "expo-status-bar"
 import React from "react"
 import { Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import ContentCarousel from "./ContentCarousel"
+import { connect } from "react-redux"
 
 
 
 const Home = (props) =>{
+
          
         return(
-
-            <SafeAreaView style={styles.safeArea}>
-                <ScrollView > 
+                <View style={{width:'100%', height:'100%', overflow:'hidden', backgroundColor:'#e2ceb5'}}> 
                     <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
                     <View style={{
                         backgroundColor:'black',
                         borderBottomLeftRadius: 60,
                         borderBottomRightRadius:60,
-                        height: 550,
+                        height: '80%',
                         width: '100%',
                         overflow:'hidden',
                         }}>            
@@ -34,29 +32,30 @@ const Home = (props) =>{
                                 <Text onPress={() => props.navigation.navigate("Cities")} style={styles.button}>Go There!</Text> 
                             </TouchableOpacity>
                     </View>
-                </ScrollView> 
-            </SafeAreaView>       
+                </View>      
         )
     
 }
 
-export default Home
+
+const mapStateToProps = state => {
+  return {
+      userLogged: state.loginReducer.userLogged
+  }
+}
+
+
+export default connect(mapStateToProps) (Home)
 
 const styles = StyleSheet.create({
     image: {
         backgroundColor:'black',
-        opacity:0.8,
         width:"100%",
-        height:550, 
+        height:'100%', 
     },
-    safeArea:{
-        flex: 1,
-        backgroundColor: '#e2ceb5',
-        height:'100%'
-    },      
     tittle:{
         fontFamily:'sans-serif-medium',
-        marginTop:150,
+        marginTop:'40%',
         textAlign:'center',
         fontSize:25,
         width:'90%',
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
         position:'absolute',
         width:185,
         height:150,
-        top:2,
+        top:'1%',
         left:'30%',
         zIndex:1000,
     },
