@@ -45,7 +45,9 @@ class Cities extends React.Component{
         return(
             <SafeAreaView style={styles.safeArea}>
                 <ScrollView >
-                    <Image style={styles.hero} source={require("../assets/img/heroimg2.jpg")}/>
+                    <View style={{width:'100%', overflow:'hidden', borderBottomLeftRadius:30, borderBottomRightRadius:30}}>
+                        <Image style={styles.hero} source={require("../assets/img/heroimg2.jpg")}/>
+                    </View>
                     <View >
                         <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                             <Image  style={styles.avionPNG} source={require("../assets/img/avionH1CitiesL.png")}/>
@@ -67,7 +69,7 @@ class Cities extends React.Component{
                                 onChangeText={(e) => this.props.findCity(e)}
                             />
                         </View>
-                        <View style={{backgroundColor:'black', }}>
+                        <View style={{backgroundColor:'black', paddingVertical:30, borderTopLeftRadius:20, borderTopRightRadius:20}}>
                             {this.props.filteredCities.length >0 
                                 ?   this.props.filteredCities.map(city =>{
                                     return  <TouchableOpacity onLongPress={() => console.log('hola')} key={city._id} onPress={() => this.props.navigation.navigate("CityItineraries",{cityId:city._id})} style={styles.divBanners}>
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     },  
     cityName:{
         top:"10%",
-        fontSize: 25,
+        fontSize: 24,
         zIndex:20,
         textAlign:'center',
         width:'100%', 
@@ -137,7 +139,9 @@ const styles = StyleSheet.create({
         borderRadius: 500,
         overflow:'hidden',
         marginLeft:5, 
-        marginVertical:10       
+        marginVertical:10,
+        borderWidth:2,
+        borderColor: '#e2ceb5',     
     },
     input: {
         fontFamily:'sans-serif-medium',

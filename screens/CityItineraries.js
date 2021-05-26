@@ -70,12 +70,14 @@ class CityItineraries extends React.Component{
 
         return (   
                 <SafeAreaView style={styles.safeArea}>
-                    <ScrollView refreshControl={ <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>}>
-                        <ImageBackground style={styles.hero} source={{uri: this.state.city.img}}>
-                                    <TouchableOpacity style={styles.backIcon}  onPress={() => this.props.navigation.navigate('Cities')}>
-                                        <MaterialIcons name="arrow-back" size={40} color="black" />
-                                    </TouchableOpacity>
-                        </ImageBackground>
+                    <ScrollView  keyboardShouldPersistTaps={'handled'}  refreshControl={ <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>}>
+                        <View style={{width:'100%', overflow:'hidden', borderBottomLeftRadius:30, borderBottomRightRadius:30}}>
+                            <ImageBackground style={styles.hero} source={{uri: this.state.city.img}}>
+                                        <TouchableOpacity style={styles.backIcon}  onPress={() => this.props.navigation.navigate('Cities')}>
+                                            <MaterialIcons name="arrow-back" size={40} color="black" />
+                                        </TouchableOpacity>
+                            </ImageBackground>
+                        </View>
                         <View >
                             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', width:'100%', height:'auto'}}>
                                 <Image  style={styles.avionPNG} source={require("../assets/img/avionH1CitiesL.png")}/>
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
     },
     divNotFounded:{
         width:'95%',
-        height:150,
+        height:175,
         alignItems:'center',
         justifyContent:'center',
         borderRadius: 500,

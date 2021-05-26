@@ -16,9 +16,9 @@ export default class Loader extends React.Component {
         <AnimatedLoader
           visible={visible}
           overlayColor="rgba(255,255,255,0.0)"
-          source={require("../assets/10398-plane-window.json")}
+          source={require("../assets/40554-travel-maps-animated-icons.json")}
           animationStyle={styles.lottie}
-          speed={3}
+          speed={1.5}
           loop={true}
         >
           <Text style={{fontSize:30, fontWeight:'bold',fontFamily:'sans-serif-medium',}}>Loading...</Text>
@@ -31,7 +31,7 @@ export default class Loader extends React.Component {
 const styles = StyleSheet.create({
   lottie: {
     width: 200,
-    height: 300
+    height: 300,
   },
   background:{
     opacity:1,

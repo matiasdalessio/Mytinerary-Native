@@ -16,8 +16,10 @@ function DrawerContent(props) {
     <View style={{ flex: 1, backgroundColor:'black'}}>
       <View style={{backgroundColor:'black', marginTop:40}}>
         <View style={{  flexDirection: 'column' }}>
-            <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center', marginLeft:12, marginBottom:20}}>
-              {props.userLogged && <Image style={{width:60, height:60, borderRadius: 100}} source={{uri: props.userLogged.img}}/>}
+            <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center', marginLeft:12, marginBottom:20,}}>
+              {props.userLogged 
+              ? <Image style={{width:60, height:60, borderRadius: 100, }} source={{uri: props.userLogged.img}}/>
+              : <Image style={{width:60, height:60, borderRadius: 100, backgroundColor:'#e2ceb5'}} source={require('../assets/img/generic-user-icon.jpg')}/> }
             <Title style={styles.title}>{!props.userLogged ? 'Welcome!' : 'Welcome ' + props.userLogged.firstName + '!'}</Title>
             </View>
           </View>
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     fontFamily:'sans-serif-medium',
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#e2ceb5',
     marginBottom: 10,
     marginLeft: 10,
   },

@@ -67,11 +67,12 @@ class LogIn extends React.Component{
         const {email, googleId} = response.profileObj
         this.send(null,{email: email, password: "matias"+googleId, country: "null"})        
     }
+    
 
 
     render() {
         return(
-                <ScrollView >
+                <ScrollView  keyboardShouldPersistTaps={'handled'}>
                     <ImageBackground style={{width:'100%', height:900}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
                         <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:'30%', left:10, borderRadius:50}}>
@@ -157,8 +158,6 @@ const styles = StyleSheet.create({
             fontSize: 20,
             marginTop: 10,
             marginBottom:10,
-            textDecorationLine: 'none',
-
         },
     tittle:{
         color:'#212529',

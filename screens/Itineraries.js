@@ -205,23 +205,25 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
                       </ScrollView >
                       <Text style={{fontSize:20, marginBottom:20,fontWeight:'bold', textAlign:'center', marginTop:15}}>Leave us a comment!</Text>
                       <View style={{backgroundColor:'#d3b48f', borderRadius:30, width:'94%', alignItems:'center', alignSelf:'center', marginBottom:10}} >
-                          <ScrollView style={{height:'auto'}}>
+                          <ScrollView style={{height:'auto', minHeight:300}}>
                             {/* <View style={commentState.comments.length === 0 ? styles.historyEmptyComments : styles.historyComments} > */}
                               {commentState.comments.length !== 0 
                               ? commentState.comments.map(comment =>{
                                 return <Comment key = {comment._id} commentInfo = {comment} itineraryId ={_id} itinerary ={itinerary} props={props} setCommentState = {setCommentState} />
                               })
-                              : <View style={{alignSelf:'center', width:'100%'}}>
+                              : <View style={{alignSelf:'center', width:'100%', height:250, alignItems:'center', justifyContent:'center'}}>
                                   <Text style={{fontWeight:'bold', fontSize:23, textAlign:'center', width:'100%'}} >Nobody left a comment yet...</Text>
-                                  <Text style={{fontWeight:'bold', fontSize:2, textAlign:'center'}}>Be the first!</Text>
+                                  <Text style={{fontWeight:'bold', fontSize:23, textAlign:'center'}}>Be the first!</Text>
                                   <FontAwesome style={{alignSelf:'center', marginTop:20, fontSize:35}} name="arrow-down" size={24} color="black" />
                                 </View>
                             }
                             {/* </View>  */}
                           </ScrollView>
-                        <View style={{width:'98%', flexDirection:'row', alignItems:'center', backgroundColor: '#e2ceb5',borderRadius:50, overflow:'hidden', height:50, marginBottom:5}}>                            
-                              <TextInput style={styles.input} name ="comment" onKeyPress={(e)=> enterToSend(e)} placeholder="Write your comment here!" onChangeText={(text)=> readComment(text)} type="text" value={commentText.comment} ></TextInput> 
-                              <MaterialIcons style={{position:'absolute', right:10}} onPress={() => sendComment()}  name="send" size={35} color="black" />
+                        <View style={{width:'98%', flexDirection:'row', alignItems:'center', backgroundColor: '#e2ceb5',borderRadius:50, overflow:'hidden', height:'auto', marginBottom:5}}>                            
+                              <TextInput multiline={true}  style={styles.input} name ="comment"  placeholder="Write your comment here!" onChangeText={(text)=> readComment(text)} type="text" value={commentText.comment} ></TextInput> 
+                              <TouchableOpacity style={{position:'absolute', right:10}} onPress={() => sendComment()}>
+                                  <MaterialIcons  name="send" size={35} color="black" />
+                              </TouchableOpacity>
                         </View>                    
                       </View>
                     </View>
@@ -300,15 +302,16 @@ const styles = StyleSheet.create({
     },
     input: {
       fontFamily:'sans-serif-medium',
-      width: '84%',
-      height: 60,
-      marginLeft:15,
+      width: '80%',
+      height: 'auto',
+      marginLeft:25,
       alignSelf:'center',
       fontSize: 20,
       marginTop: 10,
       marginBottom:10,
+      maxHeight:100,
       borderBottomColor:'black',
-      borderBottomWidth:2,
+      borderBottomWidth:0,
       textDecorationLine: 'none',
   },
 

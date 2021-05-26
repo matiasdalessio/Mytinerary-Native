@@ -173,7 +173,7 @@ class SignUp extends React.Component{
     
     render() {
         return(
-                <ScrollView style={{flex:1, height:'100%'}}>
+                <ScrollView  keyboardShouldPersistTaps={'handled'} style={{flex:1, height:'100%'}}>
                     <ImageBackground style={{width:'100%', height:900}} source={require( '../assets/img/backgroundSign.jpg')}>
                         <Image style={styles.logo}  source={require('../assets/img/LOGO.png')}></Image> 
                         <View style={{width:'95%', height:'auto', alignItems:"center", justifyContent:"center", backgroundColor:'#e2ceb5', top:'20%', left:10, borderRadius:50}}>

@@ -4,6 +4,7 @@ import { Alert, Image, ScrollView, Text, TextInput, View } from "react-native";
 import { connect } from "react-redux";
 import itinerariesActions from "../redux/actions/itinerariesActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOrRemoveComment, props}) =>{ 
@@ -80,7 +81,7 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
 
     return(
         <View >
-            <View style={{flexDirection:'row',width:'100%', alignItems:'center', justifyContent:'flex-start', marginVertical:3,backgroundColor:'#e2ceb5', borderRadius:50}}>            
+            <View style={{flexDirection:'row',width:'100%', alignItems:'center', minHeight:60, justifyContent:'flex-start', marginVertical:3,backgroundColor:'#e2ceb5', borderRadius:50}}>            
                 <Image style={{width:50, height:50, borderRadius:100, marginLeft:5}} source={{uri: commentInfo.img}}/>
                     <View style={{width:'78%', marginHorizontal:10, marginVertical:3}}>
                         <Text style={{fontSize:15, fontWeight:'bold'}}>{commentInfo.firstName} {commentInfo.lastName}:</Text>
@@ -92,10 +93,14 @@ const Activity = ({commentInfo, userLogged, setCommentState, itineraryId, editOr
                                 : null } 
                           </View>
                         :<View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', minWidth:'98%', maxWidth:'98%'}}> 
-                              <TextInput style={{width:'75%'}} onKeyPress={(e)=> enterToSend(e)} name ="comment" onChangeText={(text, name='comment')=> readComment(text, name)} type="text" value={editingComment.comment} ></TextInput>
+                              <TextInput multiline={true}  style={{width:'75%', maxHeight:100}} autoFocus={true}  name ="comment" onChangeText={(text, name='comment')=> readComment(text, name)} type="text" value={editingComment.comment} ></TextInput>
                               <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', width:80, marginRight:10}}>
-                                  <FontAwesome5 name="edit" size={24} color="black" onPress={() => send()} /> 
-                                  <MaterialCommunityIcons name="cancel" size={24} color="black" onPress={() => setEditComment({...editingComment, editing:false})} /> 
+                                <TouchableOpacity onPress={() => send()}>
+                                  <MaterialIcons name="check" size={24} color="black" />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => setEditComment({...editingComment, editing:false})}>
+                                  <MaterialCommunityIcons name="cancel" size={24} color="black"  />
+                                </TouchableOpacity> 
                               </View> 
                         </View> } 
                     </View>                                
