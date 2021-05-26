@@ -15,7 +15,7 @@ const Home = (props) =>{
                         backgroundColor:'black',
                         borderBottomLeftRadius: 60,
                         borderBottomRightRadius:60,
-                        height: '80%',
+                        height: '90%',
                         width: '100%',
                         overflow:'hidden',
                         }}>            
@@ -27,7 +27,6 @@ const Home = (props) =>{
                     </ImageBackground>
                     </View>
                     <View>
-                            <Text style={styles.callToAction}>What are you waiting for?</Text>
                             <TouchableOpacity>
                                 <Text onPress={() => props.navigation.navigate("Cities")} style={styles.button}>Go There!</Text> 
                             </TouchableOpacity>
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     },
     tittle:{
         fontFamily:'sans-serif-medium',
-        marginTop:'40%',
+        marginTop:'50%',
         textAlign:'center',
         fontSize:25,
         width:'90%',

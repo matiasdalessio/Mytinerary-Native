@@ -15,7 +15,7 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
   const [isModalVisible, setModalVisible] = useState(false);
   const [userData, setUserData] = useState({userLS:{}, userData:{}})
   const {comments, usersLiked, _id, price, duration, hashtags, itineraryName, author} = itinerary
-  const [toggleItineraries, setToggleItineraries] = useState({button: false,text: "View More", display: {display:'none'}})
+  const [toggleItineraries, setToggleItineraries] = useState({button: false,text: "keyboard-arrow-down", display: {display:'none'}})
   const [like, setLike] = useState({usersLiked, fetching:false})  
   const [activity, setActivity] = useState({activities:[]})
   const [commentState, setCommentState] = useState({comments: comments})
@@ -57,10 +57,11 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
 
   const showMoreShowLess = ((e) => {
     setToggleItineraries(toggleItineraries.button 
-      ? {button: false, text: "View More", display: {display:'none'}}
-      : {button: true, text: "View Less", display: {display:'flex'}}
+      ? {button: false, text: "keyboard-arrow-down", display: {display:'none'}}
+      : {button: true, text: "keyboard-arrow-up", display: {display:'flex'}}
     )}
   ) 
+
   
   const likeToggle = async () => {
     if (userLogged) {
@@ -228,8 +229,8 @@ const Itineraries = ({userLogged, itinerary, addOrRemoveLike, loadActivitiesActi
                       </View>
                     </View>
                 </View>  
-                <TouchableOpacity onPress={(e) => showMoreShowLess(e)} onPressIn={(e) =>loadActivities(_id)}>             
-                        <Text style={styles.btnReadMore}>{toggleItineraries.text}</Text>
+                <TouchableOpacity onPress={(e) => showMoreShowLess(e)} onPressIn={(e) =>loadActivities(_id)}> 
+                        <MaterialIcons style={styles.btnReadMore} name={toggleItineraries.text} size={40} color="black" />            
               </TouchableOpacity> 
           </ImageBackground>
       </View>
@@ -261,21 +262,13 @@ const styles = StyleSheet.create({
       justifyContent:'center',
     },
     btnReadMore:{
-      fontFamily:'sans-serif-medium',
-      color:'#e2ceb5',
-      backgroundColor:'black',
       zIndex:2,
       alignSelf:'center',
       textAlign:'center',
-      textAlignVertical:'center',
-      fontSize:20,
-      width:150,
-      height:40,  
+      textAlignVertical:'center', 
       marginTop:10,
       marginBottom:5,
       justifyContent:'center',   
-      borderTopRightRadius: 50,
-      borderBottomLeftRadius: 50, 
     },
     historyEmptyComments:{
       borderRadius: 15,

@@ -54,7 +54,7 @@ class LogIn extends React.Component{
             Toast.show({
                 text1: 'Logged correctly!',
                 text2: 'Welcome ' + this.props.userLogged.firstName,
-                visibilityTime: 2000,
+                visibilityTime: 1000,
                 onHide: () => this.props.navigation.navigate('Home'),
               }
             )

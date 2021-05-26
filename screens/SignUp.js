@@ -114,7 +114,7 @@ class SignUp extends React.Component{
                 type: 'error',
                 text1: "Passwords doesn't match",
                 text2: 'Verify and try again!',
-                visibilityTime: 2000,
+                visibilityTime: 1000,
               }
             )
         }
